@@ -132,9 +132,14 @@
 			content : null,
 			title   : null,
 
+
+			// form
+			form: null,
+			formData: [],
+
 			// HTML templates
 			tpl: {
-				wrap     : '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',
+				wrap     : '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div><div class="fancybox-form"></div></div></div></div>',
 				image    : '<img class="fancybox-image" src="{href}" alt="" />',
 				iframe   : '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0"' + ($.browser.msie ? ' allowtransparency="true"' : '') + '></iframe>',
 				error    : '<p class="fancybox-error">The requested content cannot be loaded.<br/>Please try again later.</p>',
@@ -351,6 +356,8 @@
 
 				group[ i ] = obj;
 			});
+			
+			
 
 			// Extend the defaults
 			F.opts = $.extend(true, {}, F.defaults, opts);
@@ -905,6 +912,16 @@
 			} else {
 				F._afterLoad();
 			}
+			if (F.opts.form !== null) {
+				console.log(F.opts.form);
+				console.log(F.opts.formData);
+				console.log(obj);
+				$('.fancybox-form').append(F.opts.form);
+				for ( var v in F.opts.formData ) {
+					$('<input type="hidden">').attr('name', F.opts.formData[v]).attr('value', obj.element.attr(F.opts.formData[v])).appendTo($('.fancybox-form form'));
+				}
+			}
+			
 		},
 
 		_error: function ( type ) {
