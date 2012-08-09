@@ -277,6 +277,13 @@
 							element : element
 						};
 
+						if (F.opts.formData.length > 0) {
+							obj.formData = [];
+							for (var v in F.opts.formData) {
+								obj.formData[F.opts.formData[v]] = element.attr(F.opts.formData[v]);
+							}
+						}
+
 						if ($.metadata) {
 							$.extend(true, obj, element.metadata());
 						}
@@ -912,11 +919,14 @@
 			} else {
 				F._afterLoad();
 			}
+
 			if (F.opts.form !== null) {
-				console.log(F.opts.form);
-				console.log(F.opts.formData);
-				console.log(obj);
 				$('.fancybox-form').append(F.opts.form);
+				if (obj.formData) {
+					for (var v in obj.formData) {
+						$('<input type="hidden">').attr('name', v).attr('value', obj.formData[v]).append('.fancybox-form form');
+					}
+				}
 				for ( var v in F.opts.formData ) {
 					$('<input type="hidden">').attr('name', F.opts.formData[v]).attr('value', obj.element.attr(F.opts.formData[v])).appendTo($('.fancybox-form form'));
 				}
